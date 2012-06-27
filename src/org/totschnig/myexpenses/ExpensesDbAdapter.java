@@ -58,7 +58,7 @@ public class ExpensesDbAdapter {
 
   private String mDatabaseName;
   private static final String DATABASE_TABLE = "transactions";
-  private static final int DATABASE_VERSION = 21;
+  private static final int DATABASE_VERSION = 22;
   
   /**
    * SQL statement for expenses TABLE
@@ -86,7 +86,7 @@ public class ExpensesDbAdapter {
    */
   private static final String ACCOUNTS_CREATE = 
     "create table accounts (_id integer primary key autoincrement, label text not null, " +
-    "opening_balance integer, description text, currency text not null, type text default 'CASH');";
+    "opening_balance integer, description text, currency text not null, type text default 'CASH', color integer default -3355444);";
 
   
   /**
@@ -222,6 +222,9 @@ public class ExpensesDbAdapter {
         insertDefaultPaymentMethods(db);
         db.execSQL("alter table transactions add column " + KEY_METHODID + " text default 'CASH'");
         db.execSQL("alter table accounts add column type text default 'CASH'");
+      }
+      if (oldVersion < 22) {
+          db.execSQL("alter table accounts add column color integer default -3355444");
       }
     }
   }
@@ -711,16 +714,18 @@ public class ExpensesDbAdapter {
    * @param opening_balance
    * @param description
    * @param currency
+   * @param color
    * @return rowId or -1 if failed
    */
   public long createAccount(String label, long opening_balance, 
-      String description, String currency, String type) {
+      String description, String currency, String type, int color) {
     ContentValues initialValues = new ContentValues();
     initialValues.put("label", label);
     initialValues.put("opening_balance",opening_balance);
     initialValues.put("description",description);
     initialValues.put("currency",currency);
     initialValues.put("type",type);
+    initialValues.put("color",color);
     return mDb.insert("accounts", null, initialValues);
   }
   /**
@@ -730,16 +735,18 @@ public class ExpensesDbAdapter {
    * @param opening_balance
    * @param description
    * @param currency
+   * @param color
    * @return number of rows affected
    */
   public int updateAccount(long rowId, String label, long opening_balance, 
-      String description, String currency,String type) {
+      String description, String currency,String type, int color) {
     ContentValues args = new ContentValues();
     args.put("label", label);
     args.put("opening_balance",opening_balance);
     args.put("description",description);
     args.put("currency",currency);
     args.put("type",type);
+    args.put("color",color);
     return mDb.update("accounts", args, KEY_ROWID + "=" + rowId, null);
   }
   
@@ -781,13 +788,13 @@ public class ExpensesDbAdapter {
   /**
    * fetches the account with given row id
    * @param rowId
-   * @return Cursor with fields "label","description","opening_balance","currency"
+   * @return Cursor with fields "label","description","opening_balance","currency","type", "color"
    * @throws SQLException
    */
   public Cursor fetchAccount(long rowId) throws SQLException {
     Cursor mCursor =
       mDb.query("accounts",
-          new String[] {"label","description","opening_balance","currency","type"},
+          new String[] {"label","description","opening_balance","currency","type","color"},
           KEY_ROWID + "=" + rowId,
           null, null, null, null, null);
     if (mCursor != null) {

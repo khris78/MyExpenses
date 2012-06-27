@@ -29,11 +29,14 @@
   <string name="backup_failure">La sauvegarde sur carte SD a échoué.</string>
   <string name="backup_success">La base de données et les paramètres ont été sauvegardé sur la carte
       SD.</string>
+  <string name="black_color_name">Noir</string>
+  <string name="blue_color_name">Bleu</string>
   <string name="button_cancel">Annuler</string>
   <string name="button_continue">Continuer</string>
   <string name="category">Catégorie</string>
   <string name="category_already_defined">La catégorie %1$s existe</string>
   <string name="close">Fermer</string>
+  <string name="color">Couleur</string>
   <string name="comment">Remarques</string>
   <string name="create_category">Nouvelle catégorie</string>
   <string name="credits_text">Design de la page Aide copié de Mathdoku.
@@ -43,6 +46,7 @@
   <string name="currency">Devise</string>
   <string name="currency_not_iso4217">%1$s n\'est pas un code valide selon ISO 4217</string>
   <string name="current_balance">Solde courant</string>
+  <string name="cyan_color_name">Cyan</string>
   <string name="date">Date</string>
   <string name="date_time">Date / Heure</string>
   <string name="default_account_description">Ce compte a été créé automatiquement lors de
@@ -50,13 +54,16 @@
   <string name="description">Description</string>
   <string name="dialog_no">Non</string>
   <string name="dialog_title_select_account">Sélectionner un compte</string>
+  <string name="dialog_title_select_color">Sélectionner une couleur</string>
   <string name="dialog_title_select_currency">Sélectonner une devise</string>
   <string name="dialog_title_select_import_source">Sélectionner une source pour l\'import</string>
   <string name="dialog_title_select_method">Sélectionner un paiement</string>
   <string name="dialog_title_select_type">Sélectionner un type</string>
   <string name="dialog_yes">Oui</string>
+  <string name="dkgray_color_name">Gris foncé</string>
   <string name="done">OK</string>
   <string name="edit_category">Éditer la catégorie</string>
+  <string name="error_accessing_gplay">Erreur lors de l\'accès à Google Play</string>
   <string name="expense">dépense</string>
   <string name="export_expenses_outputfile_exists">Le fichier d\'export existe déjà. Attendez une
       minute avant de réessayer.</string>
@@ -81,6 +88,8 @@
   <string name="ftp_connection_refused">Connection avec %1$s refusé</string>
   <string name="ftp_connection_failure">Connection avec %1$s a échoué</string>
   <string name="ftp_cancelled">Téléchargement FTP vers %1$s avorté</string>
+  <string name="gray_color_name">Gris</string>
+  <string name="green_color_name">Vert</string>
   <string name="grisbi_file">&grisbi_file;</string>
   <string name="grisbi_import_button_categories_only">Catégories</string>
   <string name="grisbi_import_button_categories_and_parties">Catégories et tiers</string>
@@ -124,6 +133,8 @@
   <string name="income">revenu</string>
   <string name="invalid_number_format">Format de nombre non reconnu. Utilisez %1$s</string>
   <string name="label">Intitulé</string>
+  <string name="ltgray_color_name">Gris clair</string>
+  <string name="magenta_color_name">Magenta</string>
   <string name="menu_accounts">Comptes</string>
   <string name="menu_accounts_explain">Le bouton Comptes vous permet de changer de compte si vous en
       aviez défini plusieurs. Au départ, il n\'y en a qu\'un seul. Si vous désirez en ajouter
@@ -159,6 +170,7 @@
   <string name="menu_settings_account">Compte en cours</string>
   <string name="menu_show_detail">Afficher les détails</string>
   <string name="method">Méthode</string>
+  <string name="need_oi_pick_color">L\'application OI Color Picker est nécessaire pour choisir la couleur d\'arrière-plan</string>
   <string name="no_accounts">Aucun compte!</string>
   <string name="no_app_handling_email_available">Aucune application disponible pour envoyer un
       e-mail.</string>
@@ -171,6 +183,7 @@
   <string name="not_deletable_subcats_exists">Cette catégorie ne peut pas être supprimée, parce
       qu\'elle contient des sous-catégories.</string>
   <string name="no_valid_payment_methods">Aucune méthode valide de paiement pour %1$s (%2$s)</string>
+  <string name="oi_pick_colors_info">Installer OI Pick Color pour plus de choix</string>
   <string name="opening_balance">Solde initial</string>
   <string name="parse_error_file_not_found">Le fichier %1$s n\'existe pas</string>
   <string name="parse_error_no_data_found">Le fichier ne contient pas de données importables.
@@ -230,6 +243,7 @@
   <string name="pref_use_standard_menu_title">Utiliser le menu standard d\'Android</string>
   <string name="pref_use_standard_menu_summary">Au lieu d\'afficher une barre de boutons, utilisez
       le menu standard d\'Android pour accéder aux commandes.</string>   
+  <string name="red_color_name">Rouge</string>
   <string name="restore_db_success">La base de données a été rétablie à partir de la sauvegarde.
   </string>
   <string name="restore_preferences_success">Les paramètres ont été rétablis à partir de la
@@ -258,7 +272,9 @@
   <string name="warning_reset_account">Toutes les opérations du compte seront effacées. Voulez-vous 
       continuer?</string>
   <string name="warning_select_account">Vous devez sélectionner un compte!</string>
-
+  <string name="white_color_name">Blanc</string>
+  <string name="yellow_color_name">Jaune</string>
+  
   <!-- strings below this comment do not need translations for new languages -->
   <string name="version_14_upgrade_info">À partir de la version 1.4.0, la devise est définie selon
       le code ISO 4217. Dans vos comptes vous utilisez les symboles suivants qui doivent être

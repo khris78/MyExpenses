@@ -15,12 +15,12 @@
 
 package org.totschnig.myexpenses;
 
-import java.text.SimpleDateFormat;
-import java.sql.Timestamp;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
@@ -32,7 +32,6 @@ import org.totschnig.myexpenses.ButtonBar.MenuButton;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,8 +40,13 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageInfo;
 import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,16 +55,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.TextView;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
+import android.widget.Toast;
 
 /**
  * This is the main activity where all expenses are listed
@@ -255,6 +256,30 @@ public class MyExpenses extends ListActivity implements OnClickListener,OnLongCl
 
     // Now create a simple cursor adapter and set it to display
     SimpleCursorAdapter expense = new SimpleCursorAdapter(this, R.layout.expense_row, mExpensesCursor, from, to)  {
+
+      private Integer textColor = null;
+      private Integer negativeAmountsColor;
+      
+      private void calculateColors() {
+        int greyLevel = (int) (0.299 * Color.red(mCurrentAccount.color) 
+                               + 0.587 * Color.green(mCurrentAccount.color) 
+                               + 0.114 * Color.blue(mCurrentAccount.color));
+            
+        textColor = (greyLevel > 50 ? Color.BLACK : Color.WHITE);
+        
+        float hsv[] = new float[3];
+        Color.colorToHSV(mCurrentAccount.color, hsv);
+
+        if (hsv[0] < 60 || hsv[0] > 300) {
+          negativeAmountsColor = Color.CYAN;
+        } else {
+          negativeAmountsColor = Color.RED;
+        }
+      }
+      
+      
+
+      
       /* (non-Javadoc)
        * calls {@link #convText for formatting the values retrieved from the cursor}
        * @see android.widget.SimpleCursorAdapter#setViewText(android.widget.TextView, java.lang.String)
@@ -278,6 +303,11 @@ public class MyExpenses extends ListActivity implements OnClickListener,OnLongCl
        */
       @Override
       public View getView(int position, View convertView, ViewGroup parent) {
+        
+        if (textColor == null) {
+          calculateColors();
+        }
+      
         View row=super.getView(position, convertView, parent);
         TextView tv1 = (TextView)row.findViewById(R.id.amount);
         Cursor c = getCursor();
@@ -285,19 +315,28 @@ public class MyExpenses extends ListActivity implements OnClickListener,OnLongCl
         int col = c.getColumnIndex(ExpensesDbAdapter.KEY_AMOUNT);
         long amount = c.getLong(col);
         if (amount < 0) {
-          tv1.setTextColor(android.graphics.Color.RED);
-          // Set the background color of the text.
+          tv1.setTextColor(negativeAmountsColor);
         }
         else {
-          tv1.setTextColor(android.graphics.Color.BLACK);
+          tv1.setTextColor(textColor);
         }
         TextView tv2 = (TextView)row.findViewById(R.id.category);
+        tv2.setTextColor(textColor);
         col = c.getColumnIndex(ExpensesDbAdapter.KEY_TRANSFER_PEER);
         if (c.getLong(col) != 0) 
           tv2.setText(((amount < 0) ? TRANSFER_EXPENSE : TRANSFER_INCOME) + tv2.getText());
+        TextView tv3 = (TextView)row.findViewById(R.id.date);
+        tv3.setTextColor(textColor);
         return row;
       }
     };
+    
+    PaintDrawable border = new PaintDrawable(mCurrentAccount.color);
+    border.setCornerRadius(20);
+    border.setPadding(10, 10, 10, 10);
+    getListView().setBackgroundDrawable(border);
+    getListView().getEmptyView().setBackgroundDrawable(border);
+    
     setListAdapter(expense);
     setCurrentBalance(); 
     configButtons();

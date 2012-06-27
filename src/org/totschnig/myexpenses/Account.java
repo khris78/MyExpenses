@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.util.Log;
 
 /**
@@ -41,6 +42,8 @@ public class Account {
   public Currency currency;
 
   public String description;
+  
+  public int color;
   
   private static ExpensesDbAdapter mDbHelper  = MyApplication.db();
   
@@ -272,6 +275,7 @@ public class Account {
   public Account() {
     this.openingBalance = new Money(null,(long) 0);
     this.type = Type.CASH;
+    this.color = Color.LTGRAY;
   }
   public Account(String label, long openingBalance, String description, Currency currency) {
     this.label = label;
@@ -311,6 +315,11 @@ public class Account {
     } catch (IllegalArgumentException ex) { 
       this.type = Type.CASH;
     }
+    try {
+        this.color = c.getInt(c.getColumnIndexOrThrow("color"));
+      } catch (IllegalArgumentException ex) { 
+        this.color = Color.LTGRAY;
+      }
     c.close();
   }
 
@@ -348,7 +357,8 @@ public class Account {
           openingBalance.getAmountMinor(),
           description,
           currency.getCurrencyCode(),
-          type.name());
+          type.name(),
+          color);
     } else {
       mDbHelper.updateAccount(
           id,
@@ -356,7 +366,8 @@ public class Account {
           openingBalance.getAmountMinor(),
           description,
           currency.getCurrencyCode(),
-          type.name());
+          type.name(),
+          color);
     }
     if (!accounts.containsKey(id))
       accounts.put(id, this);

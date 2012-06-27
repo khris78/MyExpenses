@@ -21,7 +21,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.channels.FileChannel;
@@ -33,19 +32,14 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
@@ -342,5 +336,28 @@ public class Utils {
       this.message = message;
       this.extra = extra;
     }
+  }
+  
+  /**
+   * Indicates whether the specified action can be used as an intent. This
+   * method queries the package manager for installed packages that can
+   * respond to an intent with the specified action. If no suitable package is
+   * found, this method returns false.
+   * 
+   * From http://android-developers.blogspot.fr/2009/01/can-i-use-this-intent.html
+   *
+   * @param context The application's environment.
+   * @param action The Intent action to check for availability.
+   *
+   * @return True if an Intent with the specified action can be sent and
+   *         responded to, false otherwise.
+   */
+  public static boolean isIntentAvailable(Context context, String action) {
+      final PackageManager packageManager = context.getPackageManager();
+      final Intent intent = new Intent(action);
+      List<ResolveInfo> list =
+              packageManager.queryIntentActivities(intent,
+                      PackageManager.MATCH_DEFAULT_ONLY);
+      return list.size() > 0;
   }
 }
